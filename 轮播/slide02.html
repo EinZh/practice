@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			text-decoration: none;
+			text-align: center; 
+		}
+		body{
+			height: 2000px;
+		}
+		#nav{
+			width: 100%;
+			overflow: hidden;
+			background-color: #1dd388;
+		}
+		#btnLogin{
+			float: right;
+			width: 100px;
+			height: 40px;
+			font-size: 20px;
+			line-height: 40px;
+			color: #fff;
+			border: 1px solid #ccc;
+			border-width: 0 1px;
+			margin-right: 20px;
+		}
+		#btnLogin:hover{
+			background-color: #38f;
+		}
+		#mask{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			background: rgba(0,0,0,.3);
+		}
+		#loginCon{
+			position: fixed;
+			width: 670px;
+			height: 380px;
+			background: url(loginBg.png);
+		}
+		#close{
+			position: absolute;
+			top: 15px;
+			right: 5px;
+			background: url(close.png) no-repeat;
+			width: 40px;
+			height: 40px;
+		}
+		#container{
+			position: relative;
+			width: 960px;
+			height: 420px;
+			overflow: hidden;
+			margin: 50px auto;
+		}
+		#slide{
+			width: 5760px;
+			position: absolute;
+		}
+		#slide img{
+			width: 960px;
+			float: left;
+		}
+		#buttons{
+			position: absolute;
+			bottom: 20px;
+			left: 420px;
+		}
+		#buttons span{
+			float: left;
+			margin-left: 20px;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			background-color: #ccc; 
+		}
+		#buttons .on{
+			border: 1px solid #fff;
+			background-color: #1dd388;
+		}
+		.arrow{
+			display: none;
+			position: absolute;
+			top: 180px;
+			width: 40px;
+			height: 40px;
+			background: rgba(0,0,0,.3);
+			color: #fff;
+			font-size: 30px;
+			line-height: 40px;
+		}
+		#container:hover .arrow{
+			display: block;
+		}
+		.arrow:hover{
+			background: rgba(0,0,0,.7);
+		}
+		#prev{
+			left: 40px;
+		}
+		#next{
+			right: 40px;
+		}
+	</style>
+	<script>
+		window.onload=function(){
+			function openNew(){
+				var mask = document.createElement('div');
+				document.body.appendChild(mask);
+				mask.id='mask';
+				var sHeight=document.documentElement.scrollHeight||document.body.scrollHeight;
+				mask.style.height=sHeight+'px';
+				var loginCon=document.createElement('div');
+				document.body.appendChild(loginCon);
+				loginCon.id='loginCon';
+				loginCon.innerHTML='<div id="close"></div>';
+				var oHeight=loginCon.offsetHeight;
+				var oWidth=loginCon.offsetWidth;
+				var cHeight=document.documentElement.clientHeight;
+				var cWidth=document.documentElement.clientWidth;
+				loginCon.style.left=(cWidth-oWidth)/2+'px';
+				loginCon.style.top=(cHeight-oHeight)/2+'px';
+				var close=document.getElementById('close');
+				close.onclick=mask.onclick=function(){
+					document.body.removeChild(loginCon);
+					document.body.removeChild(mask);
+				}
+			}
+			var btnLogin=document.getElementById('btnLogin');
+			btnLogin.onclick=openNew;
+
+			var container=document.getElementById('container');
+			var slide=document.getElementById('slide');
+			var buttons=document.getElementById('buttons').getElementsByTagName('span');
+			var prev=document.getElementById('prev');
+			var next=document.getElementById('next');
+			var index=1;
+			var animated;
+			var timer;
+			var interval=3000;
+			var picNum=4;
+			function animate(left){
+				var time=300;
+				var interval=20;
+				var speed=left/(time/interval);
+				var newLeft=parseInt(slide.style.left)+left;
+				var go=function(){
+					animated=true;
+					if((speed>0&&parseInt(slide.style.left)<newLeft)||(speed<0&&parseInt(slide.style.left)>newLeft)){
+						slide.style.left=parseInt(slide.style.left)+speed+'px';
+						setTimeout(go,interval);
+					}else{
+						animated=false;
+						if(newLeft>-960){
+							slide.style.left=-960*picNum+'px';
+						}if(newLeft<-960*picNum){
+							slide.style.left=-960+'px';
+						}
+					}
+				}
+				go();
+			}
+			function showButton(){
+				for(var i=0;i<buttons.length;i++){
+					if(buttons[i].className=='on'){
+						buttons[i].className='';
+					}
+				}
+				buttons[index-1].className='on';
+			}
+			function clickButton(){
+				for(var i=0;i<buttons.length;i++){
+					buttons[i].onclick=function(){
+						if(animated){
+							return;
+						}
+						var myIndex=parseInt(this.getAttribute('index'));
+						animate((myIndex-index)*-960);
+						index=myIndex;
+						showButton();
+					}
+				}
+			}
+			clickButton();
+			function play(){
+				timer=setInterval(function(){
+					next.onclick();
+				},interval);
+			}
+			function stop(){
+				clearInterval(timer);
+			}
+
+			prev.onclick=function(){
+				if(animated){
+					return;
+				}
+				if(index==1){
+					index=4;
+				}else{
+					index-=1;
+				}
+				animate(960);
+				showButton();
+			}
+			next.onclick=function(){
+				if(animated){
+					return;
+				}
+				if(index==4){
+					index=1;
+				}else{
+					index+=1;
+				}
+				animate(-960);
+				showButton();
+			}
+			play();
+			container.onmouseover=stop;
+			container.onmouseout=play;
+		}
+	</script>
+</head>
+<body>
+	<div id="nav">
+		<div id="login">
+			<a href="#" id="btnLogin">login</a>
+		</div>
+	</div>
+	<div id="container">
+		<div id="slide" style='left:-960px'>
+			<img src="04.jpg" alt="">
+			<img src="01.jpg" alt="">
+			<img src="02.jpg" alt="">
+			<img src="03.jpg" alt="">
+			<img src="04.jpg" alt="">
+			<img src="01.jpg" alt="">
+		</div>
+		<div id="buttons">
+			<span index='1' class='on'></span>
+			<span index='2'></span>
+			<span index='3'></span>
+			<span index='4'></span>
+		</div>
+		<a href="javascript:;" class='arrow' id='prev'>&lt;</a>
+		<a href="javascript:;" class='arrow' id='next'>&gt;</a>
+	</div>
+</body>
+</html>
