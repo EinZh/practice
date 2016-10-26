@@ -66,6 +66,9 @@
 		.info p{
 			line-height: 1.5;
 		}
+		.info li{
+			margin-bottom: 10px;
+		}
 	</style>
 </head>
 <body>
@@ -91,7 +94,7 @@
 	<p>给第一个span的父级div添加了opacity为一个小于1的值</p>
 </div>
 <div class="info">
-	<p>先来让我们看一张关于层叠水平的图</p>
+	<p>先来让我们看一张关于层叠水平的图。这是默认情况下的堆叠顺序。</p>
 	<img src="层叠水平.png" alt="">
 	<h3>堆栈顺序</h3>
 	<p>每一个在HTML文档中的元素既可以在其他元素的前面，也可以在其他元素的后面。这就是所谓的堆栈顺序。决定这个顺序的规则被十分清楚的定义在说明文档中. <br />当z-index和position属性不被包括在内时，这些规则相当简单：基本上，堆栈顺序和元素在HTML中出现的顺序一样。当你把位置属性也包括在内介绍时，任何定位(不同于static的)元素（和他们的子元素）都在非定位元素前被显示出来。<br />最后，当z-index被提及时，事情变的有点儿复杂。最初，很自然的假设带有高z-index值的元素会在带有低z-index值的元素前面，但是后来发 现没那么简单。首先，z-index只对定位元素起作用。如果你尝试对非定位元素设定一个z-index值，那么肯定不起作用。其次，z-index值能 创建堆栈上下文环境，并且突然发现看似简单的东西变的更加复杂了。</p>
@@ -101,8 +104,8 @@
 	<ul>
 		<li>根元素 (HTML)</li>
 		<li>z-index 值不为 "auto"的 绝对/相对定位</li>
-		<li>一个 z-index 值不为 "auto"的 flex 项目 (flex item)，即：父元素 display: flex|inline-flex</li>
 		<li>opacity 属性值小于 1 的元素（参考 the specification for opacity）</li>
+		<li>一个 z-index 值不为 "auto"的 flex 项目 (flex item)，即：父元素 display: flex|inline-flex</li>
 		<li>transform 属性值不为 "none"的元素</li>
 		<li>mix-blend-mode 属性值不为 "normal"的元素</li>
 		<li>filter值不为“none”的元素</li>
@@ -112,6 +115,10 @@
 		<li>在 will-change 中指定了任意 CSS 属性，即便你没有直接指定这些属性的值</li>
 		<li>-webkit-overflow-scrolling 属性被设置 "touch"的元素</li>
 	</ul>
+	<p>在堆栈上下文（stacking context）中 ，子元素的堆栈顺序还是按照上述规则。重点是，<strong style="font-size:20px">子元素的z-index值只在父元素范围内有效</strong>。子堆栈上下文被看做是父堆叠上下文中一个独立的模块，和相邻的堆栈上下文完全没关系。也就是说，一个元素的堆栈顺序，不仅仅取决于它自身的 z-index ，更要看它所处在的堆栈上下文，如果所处的上下文的层级很低，即使他本身的 z-index 设置的很高，也无法移到其他更高堆栈上下文元素的上面去。</p>
+	<h3>注意</h3>
+	<p>IE 中 z-index跟标准浏览器中的解析有一个小小的区别，那就是上面说的产生堆栈上下文中的几个条件中，对第二个条件的支持的区别，在标准浏览器中元素必须是有 z-index 值的同时要有 position 属性，且值不为 static ，满足这两个条件，才会产生一个新的堆栈上下文，但低版本的 IE 中就不管这么多了， 只要你设置了 position 值不为 static ，他就会生成一个新的堆栈上下文。</p>
+	<p>至于解决办法，只要在可能出现定位元素相互覆盖的情况时，明确指定定位元素的  z-index 的值，就可以避免意外的情况了。</p>
 </div>
 </body>
 </html>
