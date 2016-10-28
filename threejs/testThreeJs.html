@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>threejs</title>
+	<style>
+		code {
+		    padding: 2px 4px;
+		    color: #d14;
+		    background-color: #f7f7f9;
+		    border: 1px solid #e1e1e8;
+		    border-radius: 3px;
+		}
+		pre {
+			width: 500px;
+		    display: block;
+		    padding: 8.5px;
+		    margin: 0 0 9px;
+		    line-height: 18px;
+		    word-break: break-all;
+		    word-wrap: break-word;
+		    white-space: pre;
+		    white-space: pre-wrap;
+		    background-color: #f5f5f5;
+		    border: 1px solid #ccc;
+		    border: 1px solid rgba(0, 0, 0, 0.15);
+		    -webkit-border-radius: 4px;
+		    -moz-border-radius: 4px;
+		    border-radius: 4px;
+		}
+		p{
+			line-height: 1.5;
+		}
+	</style>
+</head>
+<body>
+	<h3>webGL和threejs的区别</h3>
+	<p>WebGL可以看做是将OpenGL ES（OpenGL for Embedded Systems，OpenGL嵌入式版本，针对手机、游戏机等设备相对较轻量级的版本）移植到了网页平台，像Chrome、Firefox这些现代浏览器都实现了WebGL标准，使用JavaScript就可以用你熟悉的、类似OpenGL的代码编写了。<br />WebGL是一个底层的标准，在这些标准被定义之后，Chrome、Firefox之类的浏览器实现了这些标准。然后，程序员就能通过JavaScript代码，在网页上实现三维图形的渲染了。</p>
+	<h3>启动</h3>
+	<p>一个典型的Three.js程序至少要包括渲染器（Renderer）、场景（Scene）、照相机（Camera），以及你在场景中创建的物体。<br />WebGL的渲染是需要HTML5 Canvas元素的，你可以手动在HTML的<code>&lt;body&gt;</code>部分中定义Canvas元素，或者让Three.js帮你生成。<br />不过在此之前，应该在HTML的<code>&lt;head&gt;</code>部分，声明外部文件<code>three.js</code></p>
+	<h3>照相机</h3>
+	<p>它定义了三维空间到二维屏幕的投影方式，分为正交投影照相机与透视投影照相机。</p>
+	<p>使用透视投影照相机获得的结果是类似人眼在真实世界中看到的有“近大远小”的效果（如下图中的(a)）；而使用正交投影照相机获得的结果就像我们在数学几何学课上老师教我们画的效果，对于在三维空间内平行的线，投影到二维空间中也一定是平行的（如下图中的(b)）。</p>
+	<img src="touying.png" alt="">
+	<p>正交投影照相机（Orthographic Camera）设置起来较为直观，它的构造函数是：</p>
+	<code>THREE.OrthographicCamera(left, right, top, bottom, near, far)</code>
+	<img src="zjTouying.small" alt="" style="width:500px">
+	<p>透视投影照相机（Perspective Camera）的构造函数是：</p>
+	<code>THREE.PerspectiveCamera(fov, aspect, near, far)</code>
+	<img src="tsTouying.small" alt="" style="width:700px">
+	<p>aspect等于width / height，是照相机水平方向和竖直方向长度的比值，通常设为Canvas的横纵比例。</p>
+</body>
+</html>
