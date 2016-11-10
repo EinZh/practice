@@ -1,0 +1,30 @@
+/* Main SVG */
+
+.letters {
+	position: relative;
+	display: block;
+	min-height: 400px;
+	max-height: 70vh;
+	margin: 0 auto;
+}
+.letter__layer {
+	fill: none;
+	stroke-miterlimit: 3;
+	stroke-linecap: butt;
+	stroke-linejoin: bevel;
+}
+
+.letters--effect-2 .letter__layer:first-child {
+	stroke: #4caf50;
+	stroke-width: 1px;
+}
+
+.letters--effect-2 .letter__layer:nth-child(2) {
+	stroke: #ffeb3b;
+	stroke-width: 4px;
+}
+
+.letters--effect-2 .letter__layer:nth-child(3) {
+	stroke: #ececec;
+	stroke-width: 10px;
+}
