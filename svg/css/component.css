@@ -12,6 +12,7 @@
 	stroke-miterlimit: 3;
 	stroke-linecap: butt;
 	stroke-linejoin: bevel;
+	stroke-linejoin: round;
 }
 
 .letters--effect-2 .letter__layer:first-child {

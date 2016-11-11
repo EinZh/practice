@@ -1,18 +1,9 @@
-/**
- * main.js
- * http://www.codrops.com
- *
- * Licensed under the MIT license.
- * http://www.opensource.org/licenses/mit-license.php
- * 
- * Copyright 2016, Codrops
- * http://www.codrops.com
- */
+
 ;(function(window) {
 
 	'use strict';
 
-	// Helper vars and functions.
+	
 	function extend( a, b ) {
 		for( var key in b ) { 
 			if( b.hasOwnProperty( key ) ) {
@@ -21,8 +12,7 @@
 		}
 		return a;
 	}
-	// Concatenate JS objs.
-	// From http://stackoverflow.com/a/2454315.
+	
 	function collect() {
 		var ret = {};
 		var len = arguments.length;
@@ -36,46 +26,38 @@
 		return ret;
 	}
 
-	/**
-	 * LetterPart obj. A letter can be split in several parts. Each part will contain one or more layers/paths.
-	 */
+	
 	function LetterPart(el, options) {
 		this.el = el;
 		this.options = extend({}, this.options);
 		extend(this.options, options);
-		// The layers/paths.
+		
 		this.layers = [].slice.call(this.el.querySelectorAll('path'));
-		// Total number of layers.
+		
 		this.layersTotal = this.layers.length;
 		var self = this;
 		this.layers.forEach(function(layer, pos) {
 			if( self.options.pathOpacityAnim ) {
-				// If pathOpacityAnim is true, then set the opacity to 0 for all the paths except the last one. We want to make sure that given 2 or more overlapping paths the ones behind will not be shown.
 				layer.style.opacity = pos === self.layersTotal - 1 ? 1 : 0;
 			}
-			// Set the stroke dasharray to the path´s total length and stroke dashoffset to 0 so the paths are initially rendered.
 			layer.style.strokeDashoffset = 0;
 			layer.style.strokeDasharray = layer.getTotalLength();
 		});
 	}
 
-	/**
-	 * Show all the layers by setting the opacity to 1.
-	 */
+	
 	LetterPart.prototype.showLayers = function() {
 		this.layers.forEach(function(layer, pos) {
 			layer.style.opacity = 1;
 		});
 	};
 
-	/**
-	 * Letter obj. The letter element is a SVG group containing one or more parts (LetterParts).
-	 */
+	
 	function Letter(el, options) {
 		this.el = el;
 		this.options = extend({}, this.options);
 		extend(this.options, options);
-		// Set transform origin (center center).
+		
 		var bcr = this.el.getBBox();
 		this.el.style.transformOrigin = (bcr.x + bcr.width/2) + 'px ' + (bcr.y + bcr.height/2) + 'px';
 		this.parts = [];
@@ -85,9 +67,7 @@
 		});
 	}
 
-	/**
-	 * Phrase obj. The Phrase element is the SVG element itself containing all the SVG groups that represent each letter.
-	 */
+	
 	function Phrase(el, options) {
 		this.el = el;
 		this.options = extend({}, this.options);
@@ -101,17 +81,13 @@
 	}
 
 	Phrase.prototype.options = {
-		// If true, all the layers/paths of each letter part (except the last one) will animate the opacity to 0.
-		// With this, we avoid any overlapping path behind the last one to be shown.
 		pathOpacityAnim: false,
-		// The animation settings for the ´out´ animation (when we click the button and the letters disappear). We are using the anime.js lib so the syntax is the same.
 		outAnimation: {
 			translateY: [0, 15],
 			opacity: [1, 0],
 			duration: 250,
 			easing: 'easeInOutQuad'
 		},
-		// The animation settings for the ´in´ animation (when the letters appear again).
 		inAnimation: {
 			properties: {
 				translateY: {
@@ -126,13 +102,13 @@
 					easing: 'linear'
 				},
 			},
-			delay: 40 // delay increment per letter.
+			delay: 40 
 		},
 		// Stroke animation settings
 		pathAnimation: {
 			duration: 800,
 			easing: 'easeOutQuint',
-			delay: 200 // delay increment per path.
+			delay: 200 
 		}
 	};
 
